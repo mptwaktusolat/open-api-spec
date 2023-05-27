@@ -44,11 +44,7 @@ tags:
   - name: pet_model
     x-displayName: The Pet Model
     description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
-  - name: store_model
-    x-displayName: The Order Model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
+      <SchemaDefinition schemaRef="#/components/schemas/Solat" showReadOnly={true} />
 x-tagGroups:
   - name: Prayer times
     tags:
