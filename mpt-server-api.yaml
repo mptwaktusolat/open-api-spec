@@ -18,7 +18,7 @@ info:
     tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
     OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
 
-    
+
 
     <SecurityDefinitions />
 
@@ -27,13 +27,13 @@ info:
   contact:
     name: Fareez
     email: mptwaktusolat@gmail.com
-    url: https://iqfareez.com
+    url: https://mpt-server.vercel.app
   x-logo:
-    url: 'https://imgur.com/umII6oL.png'
+    url: "https://imgur.com/umII6oL.png"
     altText: MPT Server banner
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 tags:
   - name: solat
     description: Prayer time information
@@ -62,23 +62,23 @@ paths:
         - solat
       summary: Prayer time for all zone
       description: Prayer time for all zone for current month
-      operationId: addPet
+      operationId: getAllPrayerTime
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Solat'     
-        '405':
+                $ref: "#/components/schemas/Solat"
+        "405":
           description: Invalid input
-  '/solat/{zone}':
+  "/solat/{zone}":
     get:
       tags:
         - solat
       summary: Prayer time by zone
       description: Return a list of Solat information for the current month for the given zone
-      operationId: getPetById
+      operationId: getZonePrayerTime
       parameters:
         - name: zone
           in: path
@@ -87,23 +87,23 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Solat'
-        '400':
+                $ref: "#/components/schemas/Solat"
+        "400":
           description: Invalid ID supplied
-        '404':
-          description: Pet not found
-  '/solat/{zone}/{day}':
+        "404":
+          description: Solat not found
+  "/solat/{zone}/{day}":
     get:
       tags:
         - solat
       summary: Prayer time by zone
       description: Return a list of Solat information for the current month in the given day for the given zone
-      operationId: getPetByIdDay
+      operationId: getZoneTodayPrayerTime
       parameters:
         - name: zone
           in: path
@@ -116,18 +116,82 @@ paths:
           description: Day
           required: true
           schema:
-            type: string            
+            type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Solat'
-        '400':
+                $ref: "#/components/schemas/Solat"
+        "400":
           description: Invalid ID supplied
-        '404':
-          description: Pet not found          
+        "404":
+          description: Solat not found
+  /zones:
+    get:
+      tags:
+        - zones
+      summary: All zones
+      description: Return all zones information
+      operationId: getAllZones
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zones"
+        "405":
+          description: Invalid input
+  /zones/{zoneCode}:
+    get:
+      tags:
+        - zones
+      summary: All zones
+      description: Return zones information for the given zone code only. It is like a filter.
+      operationId: getFilteredZones
+      parameters:
+        - name: zoneCode
+          in: path
+          description: "Initial zone code. Eg: `prk`, `sgr` etc."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zones"
+        "405":
+          description: Invalid input
+  /mosque/{zoneCode}:
+    get:
+      tags:
+        - mosque
+      summary: Get mosque image for the given zone
+      description: "Return an image URL for the given zone. For example: `sgr` (Selangor) will give you SHAS IIUM Mosque. List for all images are listed [here](/mosques), [here](http://waktusolat.iqfareez.com/mosques)"
+      operationId: getMosqueImage
+      parameters:
+        - name: zoneCode
+          in: path
+          description: "Initial zone code. Eg: `prk`, `sgr` etc."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+
+        "405":
+          description: Invalid input
 components:
   schemas:
     ApiResponse:
@@ -197,3 +261,23 @@ components:
                 format: time
                 description: Isha time
                 example: "20:31:00"
+    Zones:
+      type: object
+      properties:
+        prayerTime:
+          type: array
+          items:
+            type: object
+            properties:
+              jakimCode:
+                type: string
+                description: Jakim code
+                example: "KDH01"
+              negeri:
+                type: string
+                description: State
+                example: "Kedah"
+              daerah:
+                type: string
+                description: District
+                example: "Kota Setar, Kubang Pasu, Pokok Sena"
