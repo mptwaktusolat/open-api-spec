@@ -1,0 +1,203 @@
+openapi: 3.0.0
+servers:
+  - url: https://mpt-server.vercel.app/api
+    description: Default server
+info:
+  description: |
+    # Introduction
+    This API is documented in **OpenAPI format** and is based on
+    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
+
+    # OpenAPI Specification
+    This API is documented in **OpenAPI format** and is based on
+    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
+
+    
+
+    <SecurityDefinitions />
+
+  version: 1.0.0
+  title: MPT Server
+  contact:
+    name: Fareez
+    email: mptwaktusolat@gmail.com
+    url: https://iqfareez.com
+  x-logo:
+    url: 'https://imgur.com/umII6oL.png'
+    altText: MPT Server banner
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: solat
+    description: Prayer time information
+  - name: zones
+    description: Zones and location information
+  - name: mosque
+    description: Mosque banner images
+  - name: pet_model
+    x-displayName: The Pet Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
+  - name: store_model
+    x-displayName: The Order Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
+x-tagGroups:
+  - name: Prayer times
+    tags:
+      - solat
+      - zones
+      - mosque
+  - name: Models
+    tags:
+      - pet_model
+      - store_model
+paths:
+  /solat:
+    get:
+      tags:
+        - solat
+      summary: Prayer time for all zone
+      description: Prayer time for all zone for current month
+      operationId: addPet
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solat'     
+        '405':
+          description: Invalid input
+  '/solat/{zone}':
+    get:
+      tags:
+        - solat
+      summary: Prayer time by zone
+      description: Return a list of Solat information for the current month for the given zone
+      operationId: getPetById
+      parameters:
+        - name: zone
+          in: path
+          description: Zone code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solat'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+  '/solat/{zone}/{day}':
+    get:
+      tags:
+        - solat
+      summary: Prayer time by zone
+      description: Return a list of Solat information for the current month in the given day for the given zone
+      operationId: getPetByIdDay
+      parameters:
+        - name: zone
+          in: path
+          description: Zone code
+          required: true
+          schema:
+            type: string
+        - name: day
+          in: path
+          description: Day
+          required: true
+          schema:
+            type: string            
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solat'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found          
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    Solat:
+      type: object
+      properties:
+        prayerTime:
+          type: array
+          items:
+            type: object
+            properties:
+              hijri:
+                type: string
+                format: date
+                description: Hijri date
+                example: "1444-10-10"
+              date:
+                type: string
+                format: string
+                description: Gregorian date
+                example: "01-May-2023"
+              day:
+                type: string
+                description: Day of the week
+                example: "Monday"
+              imsak:
+                type: string
+                format: time
+                description: Imsak time
+                example: "05:44:00"
+              fajr:
+                type: string
+                format: time
+                description: Fajr time
+                example: "05:54:00"
+              syuruk:
+                type: string
+                format: time
+                description: Syuruk time
+                example: "07:02:00"
+              dhuhr:
+                type: string
+                format: time
+                description: Dhuhr time
+                example: "13:13:00"
+              asr:
+                type: string
+                format: time
+                description: Asr time
+                example: "16:31:00"
+              maghrib:
+                type: string
+                format: time
+                description: Maghrib time
+                example: "19:20:00"
+              isha:
+                type: string
+                format: time
+                description: Isha time
+                example: "20:31:00"
