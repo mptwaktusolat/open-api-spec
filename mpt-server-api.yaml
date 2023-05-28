@@ -11,17 +11,6 @@ info:
     tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
     OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
 
-    # OpenAPI Specification
-    This API is documented in **OpenAPI format** and is based on
-    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
-    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
-
-
-
-    <SecurityDefinitions />
-
   version: 1.0.0
   title: MPT Server
   contact:
@@ -37,6 +26,8 @@ info:
 tags:
   - name: solat
     description: Prayer time information
+  - name: solat v2
+    description: Prayer time information (version 2)
   - name: zones
     description: Zones and location information
   - name: mosque
@@ -49,6 +40,7 @@ x-tagGroups:
   - name: Prayer times
     tags:
       - solat
+      - solat v2
       - zones
       - mosque
   - name: Models
@@ -128,6 +120,42 @@ paths:
           description: Invalid ID supplied
         "404":
           description: Solat not found
+  "/v2/solat/{zone}":
+    get:
+      tags:
+        - solat v2
+      summary: Prayer time by zone
+      description: Return a list of Solat information for the current month in the given day for the given zone
+      operationId: getPrayerTime
+      parameters:
+        - name: zone
+          in: path
+          description: Zone code
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: query
+          required: true
+          description: "Year for prayer data. For example: `2023`"
+          schema:
+            type: integer
+        - name: month
+          in: query
+          description: "Month number (eg: `6` for June). If not given, it will set for the current month"
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SolatV2"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Solat not found
   /zones:
     get:
       tags:
@@ -148,7 +176,7 @@ paths:
     get:
       tags:
         - zones
-      summary: All zones
+      summary: Zones for the given state
       description: Return zones information for the given zone code only. It is like a filter.
       operationId: getFilteredZones
       parameters:
@@ -165,6 +193,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Zones"
+        "405":
+          description: Invalid input
+  /zones/gps:
+    get:
+      tags:
+        - zones
+      summary: Get zone by GPS coordinate
+      description: Return zone information for the given latitude and longitude
+      operationId: getZonesbyGps
+      parameters:
+        - name: lat
+          in: query
+          description: "Latitude"
+          example: "3.2485"
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          description: "Longitude"
+          example: "101.739"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimpleZone"
         "405":
           description: Invalid input
   /mosque/{zoneCode}:
@@ -261,23 +320,97 @@ components:
                 format: time
                 description: Isha time
                 example: "20:31:00"
-    Zones:
+    SolatV2:
       type: object
       properties:
-        prayerTime:
+        zone:
+          type: string
+          example: SGR01
+        year:
+          type: integer
+          example: 2023
+        month:
+          type: string
+          description: Month name
+          example: MAY
+        last_updated:
+          type: string
+          format: date-time
+          example: "2023-05-18T18:48:11.892Z"
+        prayers:
           type: array
           items:
             type: object
             properties:
-              jakimCode:
+              hijri:
                 type: string
-                description: Jakim code
-                example: "KDH01"
-              negeri:
-                type: string
-                description: State
-                example: "Kedah"
-              daerah:
-                type: string
-                description: District
-                example: "Kota Setar, Kubang Pasu, Pokok Sena"
+                format: date
+                description: Hijri date
+                example: "1444-10-10"
+              day:
+                type: integer
+                description: Day number for the month
+                example: 2
+              fajr:
+                type: integer
+                format: date-time
+                description: Epoch timestamp in seconds
+                example: 1682940000
+              syuruk:
+                type: integer
+                format: date-time
+                description: Epoch timestamp in seconds
+                example: 1682895720
+              dhuhr:
+                type: integer
+                format: date-time
+                description: Epoch timestamp in seconds
+                example: 1682917980
+              asr:
+                type: integer
+                format: date-time
+                description: Epoch timestamp in seconds
+                example: 1682891640
+              maghrib:
+                type: integer
+                format: date-time
+                description: Epoch timestamp in seconds
+                example: 1682944260
+              isha:
+                type: integer
+                format: date-time
+                description: Epoch timestamp in seconds
+                example: 1682929860
+    Zones:
+      type: array
+      items:
+        type: object
+        properties: 
+          jakimCode:
+            type: string
+            description: Jakim code
+            example: "KDH01"
+          negeri:
+            type: string
+            description: State
+            example: "Kedah"
+          daerah:
+            type: string
+            description: District
+            example: "Kota Setar, Kubang Pasu, Pokok Sena"
+    SimpleZone:
+      type: object
+      properties:
+        state:
+          type: string
+          description: Negeri
+          example: "Pahang"
+        state_iso:
+          type: string
+          description: "State code according to https://data.humdata.org/dataset/geoboundaries-admin-boundaries-for-malaysia/resource/55b3dd6f-5786-4dce-b32f-5eca9bc8c16d"
+          example: "MY-06"
+        zone:
+          type: string
+          description: Prayer time zone
+          example: "PHG03"
+              
