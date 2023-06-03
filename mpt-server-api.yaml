@@ -124,8 +124,8 @@ paths:
     get:
       tags:
         - solat v2
-      summary: Prayer time by zone
-      description: Return a list of Solat information for the current month in the given day for the given zone
+      summary: Prayer time by zone [Experimental]
+      description: Return a list of Solat information for the current month in the given day for the given zone.
       operationId: getPrayerTime
       parameters:
         - name: zone
@@ -199,8 +199,8 @@ paths:
     get:
       tags:
         - zones
-      summary: Get zone by GPS coordinate
-      description: Return zone information for the given latitude and longitude
+      summary: Get zone by GPS coordinate [Experimental]
+      description: Return zone information for the given latitude and longitude 
       operationId: getZonesbyGps
       parameters:
         - name: lat
