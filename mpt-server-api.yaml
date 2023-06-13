@@ -32,10 +32,6 @@ tags:
     description: Zones and location information
   - name: mosque
     description: Mosque banner images
-  - name: pet_model
-    x-displayName: The Pet Model
-    description: |
-      <SchemaDefinition schemaRef="#/components/schemas/Solat" showReadOnly={true} />
 x-tagGroups:
   - name: Prayer times
     tags:
@@ -43,10 +39,6 @@ x-tagGroups:
       - solat v2
       - zones
       - mosque
-  - name: Models
-    tags:
-      - pet_model
-      - store_model
 paths:
   /solat:
     get:
@@ -74,7 +66,8 @@ paths:
       parameters:
         - name: zone
           in: path
-          description: Zone code
+          description: Zone code. See list of zones code [here](https://mpt-server.vercel.app/locations).
+          example: "sgr01"
           required: true
           schema:
             type: string
@@ -99,7 +92,8 @@ paths:
       parameters:
         - name: zone
           in: path
-          description: Zone code
+          description: Zone code. See list of zones code [here](https://mpt-server.vercel.app/locations).
+          example: "sgr01"
           required: true
           schema:
             type: string
@@ -130,7 +124,8 @@ paths:
       parameters:
         - name: zone
           in: path
-          description: Zone code
+          description: Zone code. See list of zones code [here](https://mpt-server.vercel.app/locations).
+          example: "sgr01"
           required: true
           schema:
             type: string
@@ -200,7 +195,7 @@ paths:
       tags:
         - zones
       summary: Get zone by GPS coordinate [Experimental]
-      description: Return zone information for the given latitude and longitude 
+      description: Return zone information for the given latitude and longitude
       operationId: getZonesbyGps
       parameters:
         - name: lat
@@ -253,16 +248,6 @@ paths:
           description: Invalid input
 components:
   schemas:
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
     Solat:
       type: object
       properties:
@@ -385,7 +370,7 @@ components:
       type: array
       items:
         type: object
-        properties: 
+        properties:
           jakimCode:
             type: string
             description: Jakim code
@@ -413,4 +398,3 @@ components:
           type: string
           description: Prayer time zone
           example: "PHG03"
-              
