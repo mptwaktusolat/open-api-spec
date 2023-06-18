@@ -137,7 +137,7 @@ paths:
             type: integer
         - name: month
           in: query
-          description: "Month number (eg: `6` for June). If not given, it will set for the current month"
+          description: "Month number (eg: `1` for Junuary, `2` for February etc.). If not given, it will set for the current month"
           schema:
             type: integer
       responses:
