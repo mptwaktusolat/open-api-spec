@@ -54,8 +54,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solat"
-        "405":
-          description: Invalid input
   "/solat/{zone}":
     get:
       tags:
@@ -78,8 +76,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solat"
-        "400":
-          description: Invalid ID supplied
         "404":
           description: Solat not found
   "/solat/{zone}/{day}":
@@ -110,10 +106,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solat"
-        "400":
-          description: Invalid ID supplied
         "404":
-          description: Solat not found
+          description: Solat not found. You may have provided zone code that doesn't exist or out of range day number
   "/v2/solat/{zone}":
     get:
       tags:
@@ -147,10 +141,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SolatV2"
-        "400":
-          description: Invalid ID supplied
         "404":
-          description: Solat not found
+          description: Data not found. Probably the solat data for the given month and year is not retrived yet. Please contact developer.
+        "500":
+          description: Error when parsing the parameter provided.
   /zones:
     get:
       tags:
@@ -165,8 +159,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Zones"
-        "405":
-          description: Invalid input
+        "500":
+          description: Internal Server Error. An error occured while processing your request
   /zones/{zoneCode}:
     get:
       tags:
@@ -188,8 +182,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Zones"
-        "405":
-          description: Invalid input
+        "404":
+          description: Provided zone code doesn't exist
+        "500":
+          description: Internal Server Error. An error occured while processing your request
   /zones/gps:
     get:
       tags:
@@ -204,29 +200,33 @@ paths:
           example: "3.2485"
           required: true
           schema:
-            type: string
-        - name: lang
+            type: number
+        - name: long
           in: query
           description: "Longitude"
           example: "101.739"
           required: true
           schema:
-            type: string
+            type: number
       responses:
         "200":
-          description: successful operation
+          description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SimpleZone"
-        "405":
-          description: Invalid input
+        "400":
+          description: Please supply all the required parameters
+        "404":
+          description: No zone code found for the supplied coordinate
+        "500":
+          description: Internal Server Error. An error occured while processing your request
   /mosque/{zoneCode}:
     get:
       tags:
         - mosque
       summary: Get mosque image for the given zone
-      description: "Return an image URL for the given zone. For example: `sgr` (Selangor) will give you SHAS IIUM Mosque. List for all images are listed [here](/mosques), [here](http://waktusolat.iqfareez.com/mosques)"
+      description: "Return an image URL for the given zone. For example: `sgr` (Selangor) will give you SHAS IIUM Mosque. List for all images are listed [here](/mosques)"
       operationId: getMosqueImage
       parameters:
         - name: zoneCode
