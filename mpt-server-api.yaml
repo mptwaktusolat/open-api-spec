@@ -1,33 +1,33 @@
 openapi: 3.0.0
 servers:
-  - url: https://mpt-server.vercel.app/api
+  - url: https://api.waktusolat.app
     description: Default server
+  - url: https://mpt-server.vercel.app/api
+    description: Same server, but on Vercel domain
 info:
   description: |
     # Introduction
-    This API is documented in **OpenAPI format** and is based on
-    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
-    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
+    The Malaysia Waktu Solat API provides accurate prayer times (waktu solat) for various locations in Malaysia. It offers information on daily prayer timings, including Fajr, Dhuhr, Asr, Maghrib, and Isha, based on geographical coordinates and date.
+
+     Developers can integrate this API into their applications, websites, or services to offer users convenient access to prayer timings, leveraging the authoritative data taken from JAKIM.
 
   version: 1.0.0
-  title: MPT Server
+  title: Waktu Solat API
   contact:
-    name: Fareez
+    name: Malaysia Prayer Time
     email: mptwaktusolat@gmail.com
-    url: https://mpt-server.vercel.app
+    url: https://waktusolat.app
   x-logo:
     url: "https://imgur.com/umII6oL.png"
     altText: MPT Server banner
   license:
-    name: Apache 2.0
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    name: MIT License
+    url: "https://opensource.org/license/mit/"
 tags:
-  - name: solat
-    description: Prayer time information
   - name: solat v2
     description: Prayer time information (version 2)
+  - name: solat
+    description: Prayer time information
   - name: zones
     description: Zones and location information
   - name: mosque
@@ -64,7 +64,7 @@ paths:
       parameters:
         - name: zone
           in: path
-          description: Zone code. See list of zones code [here](https://mpt-server.vercel.app/locations).
+          description: Zone code. See list of zones code [here](/locations).
           example: "sgr01"
           required: true
           schema:
@@ -112,7 +112,7 @@ paths:
     get:
       tags:
         - solat v2
-      summary: Prayer time by zone [Experimental]
+      summary: Prayer time by zone
       description: Return a list of Solat information for the current month in the given day for the given zone.
       operationId: getPrayerTime
       parameters:
@@ -126,12 +126,14 @@ paths:
         - name: year
           in: query
           required: true
-          description: "Year for prayer data. For example: `2023`"
+          description: "Year for prayer data. For example: `2024`"
+          example: "2024"
           schema:
             type: integer
         - name: month
           in: query
           description: "Month number (eg: `1` for Junuary, `2` for February etc.). If not given, it will set for the current month"
+          example: "3"
           schema:
             type: integer
       responses:
@@ -190,7 +192,7 @@ paths:
     get:
       tags:
         - zones
-      summary: Get zone by GPS coordinate [Experimental]
+      summary: Get zone by GPS coordinate
       description: Return zone information for the given latitude and longitude
       operationId: getZonesbyGps
       parameters:
