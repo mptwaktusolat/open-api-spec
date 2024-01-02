@@ -45,6 +45,7 @@ paths:
       tags:
         - solat
       summary: Prayer time for all zone
+      deprecated: true
       description: Prayer time for all zone for current month
       operationId: getAllPrayerTime
       responses:
@@ -61,6 +62,7 @@ paths:
       summary: Prayer time by zone
       description: Return a list of Solat information for the current month for the given zone
       operationId: getZonePrayerTime
+      deprecated: true
       parameters:
         - name: zone
           in: path
@@ -85,6 +87,7 @@ paths:
       summary: Prayer time by zone
       description: Return a list of Solat information for the current month in the given day for the given zone
       operationId: getZoneTodayPrayerTime
+      deprecated: true
       parameters:
         - name: zone
           in: path
@@ -125,14 +128,13 @@ paths:
             type: string
         - name: year
           in: query
-          required: true
-          description: "Year for prayer data. For example: `2024`"
+          description: "Year for prayer data. If empty, default to current year."
           example: "2024"
           schema:
             type: integer
         - name: month
           in: query
-          description: "Month number (eg: `1` for Junuary, `2` for February etc.). If not given, it will set for the current month"
+          description: "Month number (eg: `1` for January, `2` for February etc.). If empty, default to current month"
           example: "3"
           schema:
             type: integer
