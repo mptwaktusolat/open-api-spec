@@ -32,6 +32,8 @@ tags:
     description: Zones and location information
   - name: mosque
     description: Mosque banner images
+  - name: Jadual Solat
+    description: Downloadable Prayer timtable in PDF
 x-tagGroups:
   - name: Prayer times
     tags:
@@ -91,7 +93,7 @@ paths:
       parameters:
         - name: zone
           in: path
-          description: Zone code. See list of zones code [here](https://mpt-server.vercel.app/locations).
+          description: Zone code. See list of zones code [here](/locations).
           example: "sgr01"
           required: true
           schema:
@@ -121,7 +123,7 @@ paths:
       parameters:
         - name: zone
           in: path
-          description: Zone code. See list of zones code [here](https://mpt-server.vercel.app/locations).
+          description: Zone code. See list of zones code [here](/locations).
           example: "sgr01"
           required: true
           schema:
@@ -247,6 +249,45 @@ paths:
               schema:
                 type: string
                 format: binary
+        "405":
+          description: Invalid input
+  /jadual_solat:
+    get:
+      tags:
+        - Jadual Solat
+      summary: Get monthly prayer timetable
+      description: "Note: The request may take a little long time to process on the first call. Then, it will be cached on the CDN"
+      operationId: getMosqueImage
+      parameters:
+        - name: zone
+          in: query
+          description: "Zone code. Eg: `SBH01`, `WLY02`"
+          required: true
+          example: 'PRK01'
+          schema:
+            type: string
+        - name: year
+          in: query
+          description: "Year. If not defined, will use current year."
+          required: true
+          example: 2024
+          schema:
+            type: number
+        - name: month
+          in: query
+          description: "Month (1 = Jan, 2 = Feb, etc.) If not defined, will use the current monnth"
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
 
         "405":
           description: Invalid input
@@ -317,10 +358,10 @@ components:
           example: SGR01
         year:
           type: integer
-          example: 2023
+          example: 2024
         month:
           type: string
-          description: Month name
+          description: Month name. All possible values - JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC
           example: MAY
         last_updated:
           type: string
@@ -393,12 +434,12 @@ components:
         state:
           type: string
           description: Negeri
-          example: "Pahang"
-        state_iso:
+          example: "SGR"
+        district:
           type: string
-          description: "State code according to https://data.humdata.org/dataset/geoboundaries-admin-boundaries-for-malaysia/resource/55b3dd6f-5786-4dce-b32f-5eca9bc8c16d"
-          example: "MY-06"
+          description: State
+          example: "Gombak"
         zone:
           type: string
           description: Prayer time zone
-          example: "PHG03"
+          example: "SGR01"
