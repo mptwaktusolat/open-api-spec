@@ -156,7 +156,7 @@ paths:
       tags:
         - zones
       summary: All zones
-      description: Return all zones information
+      description: Return all zones information. See zones visually at https://peta.waktusolat.app
       operationId: getAllZones
       responses:
         "200":
@@ -179,6 +179,7 @@ paths:
           in: path
           description: "Initial zone code. Eg: `prk`, `sgr` etc."
           required: true
+          example: "prk"
           schema:
             type: string
       responses:
@@ -239,6 +240,7 @@ paths:
           in: path
           description: "Initial zone code. Eg: `prk`, `sgr` etc."
           required: true
+          example: sgr
           schema:
             type: string
       responses:
