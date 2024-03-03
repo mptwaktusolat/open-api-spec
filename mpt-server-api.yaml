@@ -118,7 +118,7 @@ paths:
       tags:
         - solat v2
       summary: Prayer time by zone
-      description: Return a list of Solat information for the current month in the given day for the given zone.
+      description: Return prayer times for the current month in the given day for the given zone.
       operationId: getPrayerTime
       parameters:
         - name: zone
@@ -128,6 +128,51 @@ paths:
           required: true
           schema:
             type: string
+        - name: year
+          in: query
+          description: "Year for prayer data. If empty, default to current year."
+          example: "2024"
+          schema:
+            type: integer
+        - name: month
+          in: query
+          description: "Month number (eg: `1` for January, `2` for February etc.). If empty, default to current month"
+          example: "3"
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SolatV2"
+        "404":
+          description: Data not found. Probably the solat data for the given month and year is not retrived yet. Please contact developer.
+        "500":
+          description: Error when parsing the parameter provided.
+  "/v2/solat/gps/{lat}/{long}":
+    get:
+      tags:
+        - solat v2
+      summary: Prayer time by GPS (Beta)
+      description: Return prayer times for the current month in the GPS coordinates (Latitude & Longitude)
+      operationId: getPrayerTime
+      parameters:
+        - name: lat
+          in: path
+          description: Latitude component
+          example: "3.25293"
+          required: true
+          schema:
+            type: number
+        - name: long
+          in: path
+          description: Longitude component
+          example: "101.73268"
+          required: true
+          schema:
+            type: number
         - name: year
           in: query
           description: "Year for prayer data. If empty, default to current year."
@@ -364,11 +409,11 @@ components:
         month:
           type: string
           description: Month name. All possible values - JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC
-          example: MAY
+          example: MAR
         last_updated:
           type: string
           format: date-time
-          example: "2023-05-18T18:48:11.892Z"
+          example: "2024-02-15T02:46:55.209Z"
         prayers:
           type: array
           items:
@@ -378,41 +423,41 @@ components:
                 type: string
                 format: date
                 description: Hijri date
-                example: "1444-10-10"
+                example: "1445-08-20"
               day:
                 type: integer
                 description: Day number for the month
-                example: 2
+                example: 1
               fajr:
                 type: integer
                 format: date-time
                 description: Epoch timestamp in seconds
-                example: 1682940000
+                example: 1709244960
               syuruk:
                 type: integer
                 format: date-time
                 description: Epoch timestamp in seconds
-                example: 1682895720
+                example: 1709248920
               dhuhr:
                 type: integer
                 format: date-time
                 description: Epoch timestamp in seconds
-                example: 1682917980
+                example: 1709270880
               asr:
                 type: integer
                 format: date-time
                 description: Epoch timestamp in seconds
-                example: 1682891640
+                example: 1709282580
               maghrib:
                 type: integer
                 format: date-time
                 description: Epoch timestamp in seconds
-                example: 1682944260
+                example: 1709292540
               isha:
                 type: integer
                 format: date-time
                 description: Epoch timestamp in seconds
-                example: 1682929860
+                example: 1709296680
     Zones:
       type: array
       items:
