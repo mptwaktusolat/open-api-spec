@@ -6,10 +6,26 @@ servers:
     description: Same server, but on Vercel domain
 info:
   description: |
-    # Introduction
-    The Malaysia Waktu Solat API provides accurate prayer times (waktu solat) for various locations in Malaysia. It offers information on daily prayer timings, including Fajr, Dhuhr, Asr, Maghrib, and Isha, based on geographical coordinates and date.
+    # Introduction/Pengenalan
 
-     Developers can integrate this API into their applications, websites, or services to offer users convenient access to prayer timings, leveraging the authoritative data taken from JAKIM.
+    The Malaysia Waktu Solat API provides accurate prayer times (waktu solat) for various locations in Malaysia. It offers information on monthly prayer timings, zone detection based on coordinates and more.
+
+    Malaysia Waktu Solat API menyediakan data waktu solat yang tepat untuk kesemua tempat di Malaysia. Kami menyediakan maklumat seperti waktu solat bulanan, pengesanan zon berdasarkan koordinat dan lain-lain.
+
+    ## How prayer time data is collected/Bagaimana data waktu solat dikumpulkan
+
+    We collect the data by tapping inside [JAKIM's e-solat](https://www.e-solat.gov.my/) API in some pre-determined frequency. To maintain stability and availability of this API, we store the data snapshot on our own database. **Disclaimer:** JAKIM API is undocumented and probably not meant to be used by the public, as it can change without prior notice. Hence, we try our
+    best to adapt for every new changes with the API to keep the data remains up to date every year. For more technical details, visit our repository at https://github.com/mptwaktusolat/api-waktusolat
+
+    Kami mengumpulkan data dengan mengakses API dari laman [e-solat JAKIM](https://www.e-solat.gov.my/) dalam beberapa sela masa yang ditetapkan. Untuk mengekalkan kestabilan dan ketersediaan data sepanjang masa, kami menyimpan data tersebut
+    ke dalam pangkalan data kami. **Penafian:** Jakim e-solat API tidak didokumenkan secara rasmi, mungkin ia tidak direka untuk kegunaan luar, jadi terdapat risiko untuk struktur data berubah tanpa sebarang pemberitahuan.
+    Kami berusaha sedaya upaya kami untuk mengadaptasi supaya qualiti data dapat dikekalkan sepanjang masa. Untuk maklumat teknikal, sila lawati repository kami di https://github.com/mptwaktusolat/api-waktusolat
+
+    ## Disclaimer/Penafian
+
+    The Malaysia Waktu Solat API service is provided without warranty, and users access it at their own risk, acknowledging that the service may not be error-free, available at all times, or secure, and the provider is not liable for any damages arising from its use.
+
+    Perkhidmatan Malaysia Waktu Solat API ini disediakan tanpa waranti, dan pengguna mengaksesnya atas risiko sendiri, mengakui bahawa perkhidmatan mungkin tidak bebas dari kesilapan, tidak sentiasa tersedia, atau selamat, dan penyedia tidak bertanggungjawab atas sebarang kerosakan yang timbul daripada penggunaannya.
 
   version: 1.0.0
   title: Waktu Solat API
