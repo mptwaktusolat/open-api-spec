@@ -1,9 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: https://api.waktusolat.app
-    description: Default server
   - url: https://mpt-server.vercel.app/api
-    description: Same server, but on Vercel domain
 info:
   description: |
     Bahasa Melayu
@@ -341,7 +338,7 @@ paths:
           in: query
           description: "Zone code. Eg: `SBH01`, `WLY02`"
           required: true
-          example: 'PRK01'
+          example: "PRK01"
           schema:
             type: string
         - name: year
